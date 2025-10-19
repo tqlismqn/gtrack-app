@@ -1,3 +1,3 @@
-# DEV NOTES (reset v2)
-- New workflow names to avoid stale required checks.
-- Step 1 skeleton only. Real code arrives in next steps.
+# DEV NOTES (v2 bootstrap)
+- Workflow contexts reset to gtrack-ci-v2 and gtrack-policy-v2 only.
+- Adapter branch-name policy allows codex/<task> or codex/<task>-<yyyymmddHHMM> during bootstrap.
