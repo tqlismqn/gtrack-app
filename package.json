@@ -1,0 +1,9 @@
+{
+  "name": "gtrack-app",
+  "private": true,
+  "version": "0.0.0",
+  "engines": { "node": ">=20 <21" },
+  "scripts": {
+    "build": "mkdir -p dist && echo '<!doctype html><meta charset=\"utf-8\"><title>G-Track v2</title><div style=\"font:14px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;padding:24px\">G-Track v2 FE bootstrap ✅</div>' > dist/index.html"
+  }
+}
