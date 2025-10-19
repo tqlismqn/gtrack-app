@@ -5,3 +5,6 @@
 ## Vercel (bootstrap)
 - Используем `vercel.json` с `"framework": null` и `npm run build`.
 - Сборка создаёт минимальный `dist/index.html`, чтобы превью было зелёным до Angular v2 скелета.
+
+## Sync probe (202510192224)
+- Minor touch to trigger portal auto-sync & automerge.
