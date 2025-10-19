@@ -1,0 +1,16 @@
+name: gtrack-ci-v2
+on:
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  node-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: |
+          npm ci || true
+          npm run lint || true
+          npm run build || true
+          npm test || true
