@@ -13,3 +13,6 @@
 - Autosync+automerge drill from gtrack-app.
 - Docs updated
   - Compliance fix: added required block to satisfy guard-readme check.
+
+## Sync probe (20251020145107)
+- Backend: push-to-main triggers repository_dispatch to portal.
