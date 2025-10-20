@@ -11,3 +11,5 @@
 
 ## Sync probe (20251020091913)
 - Autosync+automerge drill from gtrack-app.
+- Docs updated
+  - Compliance fix: added required block to satisfy guard-readme check.
