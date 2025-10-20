@@ -1,0 +1,28 @@
+name: gtrack-policy-v2 / guard-readme
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  guard-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ensure PR body contains 'Docs updated' block
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          body="$(gh pr view "$PR_NUMBER" --json body -q .body)"
+          if echo "$body" | grep -qi "Docs updated"; then
+            echo "OK: PR body contains 'Docs updated'."
+          else
+            echo "::error::PR body must contain 'Docs updated' block"; exit 1
+          fi
