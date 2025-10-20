@@ -8,3 +8,6 @@
 
 ## Sync probe (202510192224)
 - Minor touch to trigger portal auto-sync & automerge.
+
+## Sync probe (20251020091913)
+- Autosync+automerge drill from gtrack-app.
