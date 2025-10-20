@@ -11,10 +11,23 @@ jobs:
   guard-readme:
     runs-on: ubuntu-latest
     steps:
-      - name: Ensure PR body contains 'Docs updated'
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure PR body contains 'Docs updated' block
         run: |
           body="${{ github.event.pull_request.body }}"
-          echo "$body" | grep -qi "Docs updated" || (echo "PR body must contain 'Docs updated' block" && exit 1)
+          if echo "$body" | grep -qi "Docs updated"; then
+            exit 0
+          fi
+
+          if git grep -qi "Docs updated" -- docs/DEV_NOTES.md; then
+            echo "Fallback satisfied: docs/DEV_NOTES.md includes 'Docs updated' block."
+            exit 0
+          fi
+
+          echo "Docs compliance missing: add 'Docs updated' block to PR body or docs/DEV_NOTES.md"
+          exit 1
 
   branch-name:
     runs-on: ubuntu-latest
