@@ -1,7 +1,6 @@
 name: gtrack-policy-v2
 on:
   pull_request:
-
 jobs:
   check-docs:
     runs-on: ubuntu-latest
@@ -41,11 +40,11 @@ jobs:
   branch-name:
     runs-on: ubuntu-latest
     steps:
-      - name: Validate branch naming (relaxed for bootstrap)
-        run: echo "Relaxed branch-name policy for bootstrap PRs."
+      - name: relaxed naming (bootstrap)
+        run: echo "relaxed"
 
   fresh-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Fresh-branch check (relaxed)
-        run: echo "Relaxed freshness policy for bootstrap PRs."
+      - name: relaxed freshness (bootstrap)
+        run: echo "relaxed"

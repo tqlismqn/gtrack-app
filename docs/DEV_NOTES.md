@@ -16,3 +16,6 @@
 
 ## Sync probe (20251020145107)
 - Backend: push-to-main triggers repository_dispatch to portal.
+
+## Sync probe (20251021071808)
+- Touch from reset workflow to exercise autosync.
