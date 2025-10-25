@@ -1,0 +1,275 @@
+<div class="drivers-container">
+  <div class="drivers-header">
+    <h1>Drivers</h1>
+    <button mat-raised-button color="primary" disabled>
+      <mat-icon>add</mat-icon>
+      Add Driver (Coming Soon)
+    </button>
+  </div>
+
+  <div class="drivers-content">
+    <!-- Left Side: Drivers List -->
+    <div class="drivers-list">
+      <mat-card>
+        <mat-card-content>
+          <!-- Filters -->
+          <div class="filters">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Search</mat-label>
+              <input 
+                matInput 
+                [(ngModel)]="searchTextModel"
+                (keyup.enter)="onSearch()"
+                placeholder="Name, email, or number...">
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="status-filter">
+              <mat-label>Status</mat-label>
+              <mat-select 
+                [(ngModel)]="statusFilterModel"
+                (selectionChange)="onStatusFilterChange()">
+                <mat-option value="all">All</mat-option>
+                <mat-option value="active">Active</mat-option>
+                <mat-option value="on_leave">On Leave</mat-option>
+                <mat-option value="inactive">Inactive</mat-option>
+                <mat-option value="terminated">Terminated</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Loading State -->
+          @if (loading()) {
+            <div class="loading-state">
+              <mat-spinner diameter="40"></mat-spinner>
+              <p>Loading drivers...</p>
+            </div>
+          }
+
+          <!-- Error State -->
+          @if (error()) {
+            <div class="error-state">
+              <mat-icon>error_outline</mat-icon>
+              <p>{{ error() }}</p>
+              <button mat-button color="primary" (click)="loadDrivers()">
+                Retry
+              </button>
+            </div>
+          }
+
+          <!-- Drivers Table -->
+          @if (!loading() && !error() && drivers().length > 0) {
+            <div class="table-container">
+              <table mat-table [dataSource]="drivers()" class="drivers-table">
+                <!-- Internal Number -->
+                <ng-container matColumnDef="internal_number">
+                  <th mat-header-cell *matHeaderCellDef>#</th>
+                  <td mat-cell *matCellDef="let driver">
+                    {{ driver.internal_number }}
+                  </td>
+                </ng-container>
+
+                <!-- Name -->
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Name</th>
+                  <td mat-cell *matCellDef="let driver">
+                    <div class="driver-name">
+                      <strong>{{ getFullName(driver) }}</strong>
+                      <small>{{ driver.email }}</small>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let driver">
+                    <span class="status-badge" [ngClass]="'status-' + driver.status">
+                      {{ driver.status | titlecase }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <!-- Documents -->
+                <ng-container matColumnDef="documents">
+                  <th mat-header-cell *matHeaderCellDef>Documents</th>
+                  <td mat-cell *matCellDef="let driver">
+                    @if (driver.documents) {
+                      <div class="documents-badges">
+                        @for (doc of driver.documents.slice(0, 5); track doc.id) {
+                          <app-document-status-badge
+                            [status]="doc.status"
+                            [daysUntilExpiry]="doc.days_until_expiry"
+                            [documentName]="getDocumentLabel(doc.type)">
+                          </app-document-status-badge>
+                        }
+                        @if (driver.documents.length > 5) {
+                          <span class="more-docs">+{{ driver.documents.length - 5 }}</span>
+                        }
+                      </div>
+                    }
+                  </td>
+                </ng-container>
+
+                <!-- Readiness -->
+                <ng-container matColumnDef="readiness">
+                  <th mat-header-cell *matHeaderCellDef>Ready</th>
+                  <td mat-cell *matCellDef="let driver">
+                    @let readiness = getDriverReadiness(driver);
+                    <app-driver-readiness
+                      [ready]="readiness.ready"
+                      [validCount]="readiness.validCount"
+                      [warningCount]="readiness.warningCount"
+                      [expiredCount]="readiness.expiredCount"
+                      [noDataCount]="readiness.noDataCount">
+                    </app-driver-readiness>
+                  </td>
+                </ng-container>
+
+                <!-- Actions -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let driver">
+                    <button 
+                      mat-icon-button 
+                      color="primary"
+                      (click)="selectDriver(driver)"
+                      matTooltip="View Details">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr 
+                  mat-row 
+                  *matRowDef="let row; columns: displayedColumns;"
+                  [class.selected]="selectedDriver()?.id === row.id"
+                  (click)="selectDriver(row)">
+                </tr>
+              </table>
+            </div>
+          }
+
+          <!-- Empty State -->
+          @if (!loading() && !error() && drivers().length === 0) {
+            <div class="empty-state">
+              <mat-icon>person_off</mat-icon>
+              <p>No drivers found</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Right Side: Driver Details -->
+    <div class="driver-details">
+      @if (selectedDriver()) {
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              {{ getFullName(selectedDriver()!) }}
+            </mat-card-title>
+            <mat-card-subtitle>
+              Driver #{{ selectedDriver()!.internal_number }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="detail-section">
+              <h3>Personal Information</h3>
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <label>Email:</label>
+                  <span>{{ selectedDriver()!.email }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Phone:</label>
+                  <span>{{ selectedDriver()!.phone }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Birth Date:</label>
+                  <span>{{ selectedDriver()!.birth_date | date }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Citizenship:</label>
+                  <span>{{ selectedDriver()!.citizenship }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h3>Employment</h3>
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <label>Status:</label>
+                  <span class="status-badge" [ngClass]="'status-' + selectedDriver()!.status">
+                    {{ selectedDriver()!.status | titlecase }}
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <label>Location:</label>
+                  <span>{{ selectedDriver()!.work_location | titlecase }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Hire Date:</label>
+                  <span>{{ selectedDriver()!.hire_date | date }}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Contract:</label>
+                  <span>
+                    {{ selectedDriver()!.contract_indefinite ? 'Indefinite' : 'Fixed Term' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h3>Documents Status</h3>
+              @if (selectedDriver()!.documents) {
+                <div class="documents-list">
+                  @for (doc of selectedDriver()!.documents; track doc.id) {
+                    <div class="document-item">
+                      <app-document-status-badge
+                        [status]="doc.status"
+                        [daysUntilExpiry]="doc.days_until_expiry"
+                        [documentName]="getDocumentLabel(doc.type)">
+                      </app-document-status-badge>
+                      <span class="doc-name">{{ getDocumentLabel(doc.type) }}</span>
+                      @if (doc.to) {
+                        <span class="doc-expiry">Expires: {{ doc.to | date }}</span>
+                      }
+                      @if (doc.number) {
+                        <span class="doc-number">№ {{ doc.number }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button color="primary" disabled>
+              <mat-icon>edit</mat-icon>
+              Edit (Coming Soon)
+            </button>
+            <button mat-button disabled>
+              <mat-icon>upload_file</mat-icon>
+              Upload Documents (Coming Soon)
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      } @else {
+        <mat-card>
+          <mat-card-content>
+            <div class="empty-selection">
+              <mat-icon>person</mat-icon>
+              <p>Select a driver to view details</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+</div>
