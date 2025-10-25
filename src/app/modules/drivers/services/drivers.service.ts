@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Driver, DriversResponse } from '../models/driver.model';
 
 @Injectable({
@@ -16,11 +16,32 @@ export class DriversService {
     per_page?: number;
     page?: number;
   }): Observable<DriversResponse> {
-    return this.http.get<DriversResponse>(this.endpoint, { params });
+    console.log('🚗 Fetching drivers with params:', params);
+    
+    return this.http.get<DriversResponse>(this.endpoint, { params }).pipe(
+      tap(response => {
+        console.log('✅ Drivers loaded:', response.data.length, 'drivers');
+        console.log('📊 Total:', response.total);
+      }),
+      catchError(error => {
+        console.error('❌ Failed to load drivers:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getDriver(id: string): Observable<Driver> {
-    return this.http.get<Driver>(`${this.endpoint}/${id}`);
+    console.log('🚗 Fetching driver:', id);
+    
+    return this.http.get<Driver>(`${this.endpoint}/${id}`).pipe(
+      tap(driver => {
+        console.log('✅ Driver loaded:', driver.first_name, driver.last_name);
+      }),
+      catchError(error => {
+        console.error('❌ Failed to load driver:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getDriverReadiness(driver: Driver): {
@@ -40,7 +61,6 @@ export class DriversService {
     const expiredCount = driver.documents.filter(d => d.status === 'expired').length;
     const noDataCount = driver.documents.filter(d => d.status === 'no_data').length;
 
-    // Driver is ready if all docs are valid or expiring soon (no expired docs)
     const ready = expiredCount === 0 && driver.documents.length > 0;
 
     return {

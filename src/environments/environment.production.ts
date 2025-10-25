@@ -4,3 +4,7 @@ export const environment = {
   appName: 'G-Track TMS',
   version: '0.1.0'
 };
+
+// Log to verify correct environment
+console.log('🚀 Production Environment Loaded');
+console.log('📡 API URL:', environment.apiUrl);
