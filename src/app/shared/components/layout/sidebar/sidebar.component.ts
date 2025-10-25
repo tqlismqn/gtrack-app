@@ -4,8 +4,9 @@ import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
 
-type MenuBadge = number | null | undefined;
+type MenuBadge = string | number | null | undefined;
 
 interface MenuItem {
   label: string;
@@ -18,7 +19,7 @@ interface MenuItem {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule, MatTooltipModule, MatListModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
@@ -30,10 +31,10 @@ export class SidebarComponent implements OnInit {
   menuItems: MenuItem[] = [
     { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
     { label: 'Drivers', icon: 'people', route: '/drivers' },
-    { label: 'Vehicles', icon: 'local_shipping', route: '/vehicles', badge: 0 },
-    { label: 'Customers', icon: 'business', route: '/customers', badge: 0 },
-    { label: 'Orders', icon: 'assignment', route: '/orders', badge: 0 },
-    { label: 'Invoices', icon: 'receipt', route: '/invoices', badge: 0 }
+    { label: 'Vehicles', icon: 'local_shipping', route: '/vehicles', badge: 'Soon' },
+    { label: 'Customers', icon: 'business', route: '/customers', badge: 'Soon' },
+    { label: 'Orders', icon: 'assignment', route: '/orders', badge: 'Soon' },
+    { label: 'Invoices', icon: 'receipt', route: '/invoices', badge: 'Soon' }
   ];
 
   settingsItems: MenuItem[] = [

@@ -2,30 +2,35 @@
 @import 'src/app/core/theme/spacing.scss';
 @import 'src/app/core/theme/typography.scss';
 
+:host {
+  display: block;
+  --sidebar-wide: 260px;
+  --sidebar-mini: 72px;
+}
+
 .header {
   position: fixed;
   top: 0;
-  left: 260px;
+  left: var(--sidebar-wide);
   right: 0;
   height: 64px;
   background-color: $bg-white;
   border-bottom: 1px solid $border-light;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 $spacing-6;
   z-index: 999;
   transition: left 0.3s ease;
 
   &.sidebar-collapsed {
-    left: 72px;
+    left: var(--sidebar-mini);
   }
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .header-breadcrumb {
@@ -51,198 +56,101 @@
   }
 }
 
-.header-right {
+.spacer {
+  flex: 1;
+}
+
+.topbar-actions {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: 8px;
 }
 
-.header-action {
-  position: relative;
+.icon-btn,
+.avatar-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
 }
 
-.search-container {
-  position: relative;
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #2f67ff;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.user-menu {
+  padding: 8px 16px 4px;
+}
+
+.user-title {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.user-sub {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+:host ::ng-deep .notif-menu .mat-mdc-menu-content {
+  width: 320px;
+  padding: 8px 0;
+}
+
+.notif-head {
   display: flex;
   align-items: center;
-  transition: all 0.3s ease;
+  justify-content: space-between;
+  padding: 8px 12px 6px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+}
 
-  &.expanded {
-    .search-input {
-      width: 300px;
-      padding: 0 $spacing-3;
-      border: 1px solid $border-medium;
-    }
+.notif-item {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 10px 12px;
+
+  .tit {
+    font-weight: 600;
+    line-height: 1.25;
   }
 
-  .search-toggle {
-    color: $text-secondary;
+  .sub {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 2px;
   }
 
-  .search-input {
-    width: 0;
-    height: 36px;
-    border: none;
-    border-radius: $radius-md;
-    background-color: $gray-100;
-    font-size: $font-sm;
-    transition: all 0.3s ease;
-    outline: none;
-
-    &::placeholder {
-      color: $text-tertiary;
-    }
-
-    &:focus {
-      background-color: $bg-white;
-      border-color: $primary-blue;
-    }
+  mat-icon {
+    font-size: 22px;
+    width: 24px;
+    height: 24px;
   }
 }
 
-.notification-button {
-  position: relative;
-
-  .notification-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: $error;
-    color: $bg-white;
-    border-radius: 10px;
-    padding: 2px 6px;
-    font-size: 11px;
-    font-weight: $font-semibold;
-    line-height: 1;
-    min-width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transform: translate(25%, -25%);
-    z-index: 1;
-  }
+.notif-item + .notif-item {
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-.user-profile-button {
-  .user-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: $radius-full;
-    background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
-    color: $bg-white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: $font-semibold;
-    font-size: $font-xs;
-  }
+.notif-item.info mat-icon {
+  color: #2f67ff;
 }
 
-::ng-deep {
-  .notification-menu,
-  .user-menu {
-    .mat-mdc-menu-content {
-      padding: 0;
-    }
-  }
+.notif-item.warn mat-icon {
+  color: #f59f00;
+}
 
-  .notification-menu {
-    width: 360px;
-
-    .notification-header {
-      padding: $spacing-4;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      h3 {
-        margin: 0;
-        font-size: $font-lg;
-        font-weight: $font-semibold;
-      }
-    }
-
-    .notification-list {
-      max-height: 400px;
-      overflow-y: auto;
-
-      .notification-item {
-        padding: $spacing-4;
-        display: flex;
-        gap: $spacing-3;
-        cursor: pointer;
-        transition: background 0.2s ease;
-
-        &:hover {
-          background: $gray-50;
-        }
-
-        mat-icon {
-          color: $primary-blue;
-        }
-
-        .notification-content {
-          flex: 1;
-
-          .notification-title {
-            margin: 0 0 $spacing-1 0;
-            font-size: $font-sm;
-            font-weight: $font-medium;
-            color: $text-primary;
-          }
-
-          .notification-time {
-            margin: 0;
-            font-size: $font-xs;
-            color: $text-secondary;
-          }
-        }
-      }
-
-      .notification-empty {
-        padding: $spacing-5;
-        text-align: center;
-        color: $text-tertiary;
-      }
-    }
-  }
-
-  .user-menu {
-    .user-info {
-      padding: $spacing-4;
-      display: flex;
-      gap: $spacing-3;
-      align-items: center;
-
-      .user-avatar-large {
-        width: 48px;
-        height: 48px;
-        border-radius: $radius-full;
-        background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
-        color: $bg-white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: $font-semibold;
-        font-size: $font-base;
-      }
-
-      .user-details {
-        .user-name {
-          margin: 0 0 $spacing-1 0;
-          font-size: $font-sm;
-          font-weight: $font-medium;
-          color: $text-primary;
-        }
-
-        .user-role {
-          margin: 0;
-          font-size: $font-xs;
-          color: $text-secondary;
-        }
-      }
-    }
-  }
+.notif-item.empty mat-icon {
+  color: $text-tertiary;
 }

@@ -7,71 +7,37 @@
     </div>
   </div>
 
-  <div class="header-right">
-    <div class="search-container" [class.expanded]="searchVisible">
-      <button mat-icon-button class="search-toggle" (click)="toggleSearch()">
-        <mat-icon>search</mat-icon>
-      </button>
-      <input
-        *ngIf="searchVisible"
-        type="text"
-        class="search-input"
-        placeholder="Search..."
-        (input)="onSearch($event)"
-        autofocus
-      />
-    </div>
+  <span class="spacer"></span>
 
+  <div class="topbar-actions">
     <button
       mat-icon-button
-      class="header-action notification-button"
-      [matMenuTriggerFor]="notificationMenu"
+      class="icon-btn"
+      [matBadge]="notificationCount"
+      matBadgeSize="small"
+      matBadgeColor="primary"
+      [matMenuTriggerFor]="notifMenu"
+      aria-label="Open notifications"
     >
       <mat-icon>notifications</mat-icon>
-      <span class="notification-badge" *ngIf="notificationCount > 0">
-        {{ notificationCount }}
-      </span>
     </button>
 
     <button
       mat-icon-button
+      class="avatar-btn"
       [matMenuTriggerFor]="userMenu"
-      class="header-action user-profile-button"
+      aria-label="Open user menu"
     >
-      <div class="user-avatar">TG</div>
+      <div class="avatar">TG</div>
     </button>
   </div>
 </header>
 
-<mat-menu #notificationMenu="matMenu" class="notification-menu">
-  <div class="notification-header">
-    <h3>Notifications</h3>
-    <button mat-button color="primary">Mark all as read</button>
+<mat-menu #userMenu="matMenu" xPosition="before" yPosition="below">
+  <div class="user-menu">
+    <div class="user-title">Thomas G.</div>
+    <div class="user-sub">Administrator</div>
   </div>
-  <mat-divider></mat-divider>
-  <div class="notification-list">
-    <div class="notification-item" *ngFor="let notification of notifications">
-      <mat-icon>{{ notification.icon }}</mat-icon>
-      <div class="notification-content">
-        <p class="notification-title">{{ notification.title }}</p>
-        <p class="notification-time">{{ notification.time }}</p>
-      </div>
-    </div>
-    <div class="notification-empty" *ngIf="notifications.length === 0">
-      <p>No notifications</p>
-    </div>
-  </div>
-</mat-menu>
-
-<mat-menu #userMenu="matMenu" class="user-menu">
-  <div class="user-info">
-    <div class="user-avatar-large">TG</div>
-    <div class="user-details">
-      <p class="user-name">Thomas G.</p>
-      <p class="user-role">Administrator</p>
-    </div>
-  </div>
-  <mat-divider></mat-divider>
   <button mat-menu-item routerLink="/settings">
     <mat-icon>settings</mat-icon>
     <span>Settings</span>
@@ -80,4 +46,33 @@
     <mat-icon>logout</mat-icon>
     <span>Logout</span>
   </button>
+</mat-menu>
+
+<mat-menu #notifMenu="matMenu" class="notif-menu" xPosition="before" yPosition="below">
+  <div class="notif-head">
+    <span>Notifications</span>
+    <button mat-button (click)="markAllRead()">Mark all as read</button>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="notif-item info" *ngIf="notificationCount > 0">
+    <mat-icon>info</mat-icon>
+    <div>
+      <div class="tit">New driver document expiring soon</div>
+      <div class="sub">2 hours ago</div>
+    </div>
+  </div>
+  <div class="notif-item warn" *ngIf="notificationCount > 1">
+    <mat-icon>report_problem</mat-icon>
+    <div>
+      <div class="tit">Vehicle maintenance required</div>
+      <div class="sub">5 hours ago</div>
+    </div>
+  </div>
+  <div class="notif-item empty" *ngIf="notificationCount === 0">
+    <mat-icon>notifications_off</mat-icon>
+    <div>
+      <div class="tit">All caught up</div>
+      <div class="sub">No unread notifications</div>
+    </div>
+  </div>
 </mat-menu>

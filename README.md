@@ -2,6 +2,9 @@
 
 This is an initial main commit to enable branch protection & PR checks.
 
+### Brand assets
+Replace `src/assets/logo-gtrack-full.svg` and `src/assets/logo-g-blue.svg` with official brand files (SVG/PNG). Keep sizes similar (≈176×36 for full, 36×36 for “G”).
+
 ## Deployment
 
 This app is deployed on [Vercel](https://vercel.com).

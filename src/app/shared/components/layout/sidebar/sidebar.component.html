@@ -1,70 +1,61 @@
-<aside class="sidebar" [class.collapsed]="isCollapsed" [class.sidebar-collapsed]="isCollapsed">
-  <div class="sidebar-logo" [class.collapsed]="isCollapsed">
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidenav-header" [class.compact]="isCollapsed">
     <a routerLink="/" class="logo-link">
       <img
-        *ngIf="!isCollapsed"
-        src="assets/logo/logo-full.svg"
-        alt="G-Track"
+        *ngIf="!isCollapsed; else gOnly"
         class="logo-full"
+        src="assets/logo-gtrack-full.svg"
+        alt="G-TRACK TMS SYSTEM"
       />
-      <img
-        *ngIf="isCollapsed"
-        src="assets/logo/logo-icon.svg"
-        alt="G-Track"
-        class="logo-icon"
-      />
+      <ng-template #gOnly>
+        <img class="logo-g" src="assets/logo-g-blue.svg" alt="G" />
+      </ng-template>
     </a>
   </div>
 
   <div class="sidebar-content">
-    <nav class="sidebar-nav">
-      <div class="nav-section">
-        <a
-          *ngFor="let item of menuItems"
-          class="nav-item"
-          [class.active]="isActiveRoute(item.route)"
-          [routerLink]="item.route"
-          [matTooltip]="isCollapsed ? item.label : ''"
-          matTooltipPosition="right"
-        >
-          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
-          <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
-          <span class="nav-badge" *ngIf="item.badge && item.badge > 0">
-            {{ item.badge }}
-          </span>
-          <span class="coming-soon-badge" *ngIf="item.badge === 0 && !isCollapsed">
-            Coming Soon
-          </span>
-        </a>
-      </div>
-
-      <div class="nav-section nav-section-bottom">
-        <a
-          *ngFor="let item of settingsItems"
-          class="nav-item"
-          [class.active]="isActiveRoute(item.route)"
-          [routerLink]="item.route"
-          [matTooltip]="isCollapsed ? item.label : ''"
-          matTooltipPosition="right"
-        >
-          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
-          <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
-        </a>
-      </div>
-    </nav>
-
-    <div class="sidebar-spacer"></div>
-
-    <div class="sidebar-toggle">
-      <button
-        mat-icon-button
-        class="toggle-button"
-        (click)="toggleSidebar()"
-        [matTooltip]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    <mat-nav-list class="nav">
+      <a
+        mat-list-item
+        *ngFor="let item of menuItems"
+        [routerLink]="item.route"
+        [class.active]="isActiveRoute(item.route)"
+        [matTooltip]="item.label"
+        [matTooltipDisabled]="!isCollapsed"
         matTooltipPosition="right"
       >
-        <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
-      </button>
-    </div>
+        <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
+        <span class="badge" *ngIf="item.badge && !isCollapsed">{{ item.badge }}</span>
+      </a>
+    </mat-nav-list>
+
+    <mat-nav-list class="nav nav-bottom">
+      <a
+        mat-list-item
+        *ngFor="let item of settingsItems"
+        [routerLink]="item.route"
+        [class.active]="isActiveRoute(item.route)"
+        [matTooltip]="item.label"
+        [matTooltipDisabled]="!isCollapsed"
+        matTooltipPosition="right"
+      >
+        <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
+      </a>
+    </mat-nav-list>
+  </div>
+
+  <div class="sidenav-footer">
+    <button
+      mat-fab
+      extended
+      class="collapse-pill"
+      (click)="toggleSidebar()"
+      [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    >
+      <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      <span *ngIf="!isCollapsed">Collapse sidebar</span>
+    </button>
   </div>
 </aside>

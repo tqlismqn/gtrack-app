@@ -2,67 +2,77 @@
 @import 'src/app/core/theme/spacing.scss';
 @import 'src/app/core/theme/typography.scss';
 
+:host {
+  display: block;
+  --sidenav-wide: 260px;
+  --sidenav-mini: 72px;
+}
+
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
-  width: 260px;
+  width: var(--sidenav-wide);
   background-color: $bg-sidebar;
   border-right: 1px solid $border-light;
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease;
   z-index: 1000;
+  overflow: hidden;
 
   &.collapsed {
-    width: 72px;
+    width: var(--sidenav-mini);
 
     .nav-label,
-    .coming-soon-badge {
+    .badge {
       display: none;
     }
 
-    .nav-item {
-      justify-content: center;
+    .nav {
+      .mat-mdc-list-item {
+        justify-content: center;
+        padding-inline: 0;
+      }
+
+      .nav-icon {
+        margin: 0;
+      }
     }
   }
 }
 
-.sidebar-logo {
-  padding: $spacing-4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid $border-light;
+.sidenav-header {
+  display: grid;
+  place-items: center;
+  height: 72px;
+  padding: 12px 8px;
   background: $bg-white;
+  border-bottom: 1px solid $border-light;
 
   .logo-link {
     display: flex;
     align-items: center;
-    text-decoration: none;
+    justify-content: center;
+    width: 100%;
   }
 
   .logo-full {
-    height: 40px;
-    width: auto;
-    max-width: 180px;
-    transition: opacity 0.3s ease;
+    width: 100%;
+    max-width: 176px;
+    height: 36px;
+    object-fit: contain;
   }
 
-  .logo-icon {
-    height: 40px;
-    width: 40px;
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: scale(1.1);
-    }
+  .logo-g {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
   }
 
-  &.collapsed {
-    justify-content: center;
-    padding: $spacing-3;
+  &.compact {
+    padding: 16px 0;
   }
 }
 
@@ -70,13 +80,14 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  overflow: hidden;
 }
 
-.sidebar-nav {
-  flex: 0 0 auto;
+.nav {
+  padding-top: 4px;
+  padding-inline: 12px;
+  padding-bottom: 80px;
   overflow-y: auto;
-  padding: $spacing-4 $spacing-3;
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -86,47 +97,30 @@
     background: $gray-300;
     border-radius: $radius-full;
   }
-}
 
-.nav-section {
-  margin-bottom: $spacing-6;
+  .mat-mdc-list-item {
+    height: 44px;
+    padding-inline: 12px;
+    border-radius: $radius-md;
+    color: $text-secondary;
+    transition: background-color 0.2s ease, color 0.2s ease;
 
-  &.nav-section-bottom {
-    margin-top: auto;
-    margin-bottom: 0;
-    padding-top: $spacing-6;
-    border-top: 1px solid $border-light;
-  }
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  padding: $spacing-3 $spacing-4;
-  margin-bottom: $spacing-1;
-  border-radius: $radius-md;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: $text-secondary;
-  text-decoration: none;
-  position: relative;
-
-  &:hover {
-    background-color: $primary-blue-lighter;
-    color: $primary-blue;
-
-    .nav-icon {
+    &.active {
+      background-color: $primary-blue-light;
       color: $primary-blue;
+
+      .nav-icon {
+        color: $primary-blue;
+      }
     }
-  }
 
-  &.active {
-    background-color: $primary-blue-light;
-    color: $primary-blue;
-    font-weight: $font-medium;
-
-    .nav-icon {
+    &:hover {
+      background-color: $primary-blue-lighter;
       color: $primary-blue;
+
+      .nav-icon {
+        color: $primary-blue;
+      }
     }
   }
 
@@ -134,76 +128,53 @@
     font-size: 24px;
     width: 24px;
     height: 24px;
-    margin-right: $spacing-3;
+    margin-right: 12px;
+    flex: 0 0 24px;
     color: $text-secondary;
-    transition: color 0.2s ease;
   }
 
   .nav-label {
-    flex: 1;
-    font-size: $font-sm;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: $font-sm;
   }
 
-  .nav-badge {
+  .badge {
+    margin-left: auto;
+    font-size: 11px;
     background-color: $error;
     color: $bg-white;
-    font-size: $font-xs;
     padding: 2px 8px;
-    border-radius: $radius-full;
+    border-radius: 12px;
     font-weight: $font-medium;
-  }
-
-  .coming-soon-badge {
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: $radius-sm;
-    background-color: $gray-200;
-    color: $text-tertiary;
-    font-weight: $font-medium;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 }
 
-.sidebar-spacer {
-  flex: 1;
-  min-height: 0;
+.nav-bottom {
+  margin-top: auto;
+
+  .mat-mdc-list-item {
+    margin-top: 4px;
+  }
 }
 
-.sidebar-toggle {
-  padding: $spacing-4;
-  border-top: 1px solid $border-light;
-  background: $bg-white;
+.sidenav-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  padding: 0 12px;
 
-  .toggle-button {
+  .collapse-pill {
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(2, 18, 61, 0.08);
     width: 100%;
-    height: 40px;
-    border-radius: $radius-md;
-    background: $gray-100;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: $gray-200;
-    }
-
-    mat-icon {
-      color: $text-secondary;
-      transition: transform 0.2s ease;
-    }
-  }
-}
-
-.sidebar-collapsed {
-  .sidebar-toggle {
-    padding: $spacing-2;
-
-    .toggle-button {
-      width: 40px;
-
-      mat-icon {
-        transform: rotate(180deg);
-      }
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
   }
 }
