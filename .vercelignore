@@ -1,4 +1,31 @@
+# Dependencies
 node_modules
+npm-debug.log
+yarn-error.log
+
+# Angular
 .angular
+.angular/cache
+
+# Testing
+coverage
+*.spec.ts
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
 .git
+.gitignore
+
+# Temp
+*.tmp
 *.log
