@@ -3,66 +3,62 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { filter } from 'rxjs/operators';
 
-interface Breadcrumb {
-  label: string;
-  url: string;
+interface NotificationItem {
+  icon: string;
+  title: string;
+  time: string;
 }
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatIconModule,
-    MatButtonModule,
-    MatBadgeModule,
-    MatMenuModule,
-    MatDividerModule
-  ],
+  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule, MatMenuModule, MatDividerModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   @Input() sidebarCollapsed = false;
 
-  breadcrumbs: Breadcrumb[] = [];
+  companyName = 'Test Company';
+  currentModule = 'Dashboard';
   notificationCount = 2;
+  notifications: NotificationItem[] = [
+    { icon: 'info', title: 'New driver document expiring soon', time: '2 hours ago' },
+    { icon: 'warning', title: 'Vehicle maintenance required', time: '5 hours ago' }
+  ];
   searchVisible = false;
 
   constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.updateBreadcrumbs();
-      });
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      this.updateCurrentModule();
+    });
 
-    this.updateBreadcrumbs();
+    this.updateCurrentModule();
+    this.notificationCount = this.notifications.length;
   }
 
-  updateBreadcrumbs(): void {
+  updateCurrentModule(): void {
     const url = this.router.url;
-    this.breadcrumbs = [{ label: 'G-Track', url: '/' }];
-
     if (url.includes('/drivers')) {
-      this.breadcrumbs.push({ label: 'Drivers', url: '/drivers' });
+      this.currentModule = 'Drivers';
     } else if (url.includes('/vehicles')) {
-      this.breadcrumbs.push({ label: 'Vehicles', url: '/vehicles' });
+      this.currentModule = 'Vehicles';
     } else if (url.includes('/customers')) {
-      this.breadcrumbs.push({ label: 'Customers', url: '/customers' });
+      this.currentModule = 'Customers';
     } else if (url.includes('/orders')) {
-      this.breadcrumbs.push({ label: 'Orders', url: '/orders' });
+      this.currentModule = 'Orders';
     } else if (url.includes('/invoices')) {
-      this.breadcrumbs.push({ label: 'Invoices', url: '/invoices' });
+      this.currentModule = 'Invoices';
     } else if (url.includes('/settings')) {
-      this.breadcrumbs.push({ label: 'Settings', url: '/settings' });
+      this.currentModule = 'Settings';
+    } else {
+      this.currentModule = 'Dashboard';
     }
   }
 
@@ -73,5 +69,9 @@ export class HeaderComponent implements OnInit {
   onSearch(event: Event): void {
     const target = event.target as HTMLInputElement;
     console.log('Search query:', target.value);
+  }
+
+  logout(): void {
+    console.log('Logout clicked');
   }
 }

@@ -1,0 +1,9 @@
+<svg width="180" height="40" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- G with speech bubble -->
+  <circle cx="20" cy="20" r="18" fill="#2196F3" />
+  <text x="20" y="28" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">G</text>
+
+  <!-- G-TRACK text -->
+  <text x="50" y="20" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#212121" text-anchor="start">G-TRACK</text>
+  <text x="50" y="32" font-family="Arial, sans-serif" font-size="8" fill="#757575" text-anchor="start">TRANSPORT MANAGEMENT SYSTEM</text>
+</svg>

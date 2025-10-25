@@ -1,64 +1,70 @@
-<aside class="sidebar" [class.collapsed]="isCollapsed">
-  <!-- Logo -->
-  <div class="sidebar-header">
-    <img src="assets/logo/gtrack_logo.svg" alt="G-Track" class="logo" />
+<aside class="sidebar" [class.collapsed]="isCollapsed" [class.sidebar-collapsed]="isCollapsed">
+  <div class="sidebar-logo" [class.collapsed]="isCollapsed">
+    <a routerLink="/" class="logo-link">
+      <img
+        *ngIf="!isCollapsed"
+        src="assets/logo/logo-full.svg"
+        alt="G-Track"
+        class="logo-full"
+      />
+      <img
+        *ngIf="isCollapsed"
+        src="assets/logo/logo-icon.svg"
+        alt="G-Track"
+        class="logo-icon"
+      />
+    </a>
   </div>
 
-  <!-- Main Menu -->
-  <nav class="sidebar-nav">
-    <div class="nav-section">
-      <a
-        *ngFor="let item of menuItems"
-        class="nav-item"
-        [class.active]="isActiveRoute(item.route)"
-        [routerLink]="item.route"
-        [matTooltip]="isCollapsed ? item.label : ''"
-        matTooltipPosition="right"
-      >
-        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
-        <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
-        <span class="nav-badge" *ngIf="item.badge && item.badge > 0">
-          {{ item.badge }}
-        </span>
-        <span class="coming-soon-badge" *ngIf="item.badge === 0 && !isCollapsed">
-          Coming Soon
-        </span>
-      </a>
-    </div>
-
-    <!-- Settings Section -->
-    <div class="nav-section nav-section-bottom">
-      <a
-        *ngFor="let item of settingsItems"
-        class="nav-item"
-        [class.active]="isActiveRoute(item.route)"
-        [routerLink]="item.route"
-        [matTooltip]="isCollapsed ? item.label : ''"
-        matTooltipPosition="right"
-      >
-        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
-        <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
-      </a>
-    </div>
-  </nav>
-
-  <!-- User Profile -->
-  <div class="sidebar-footer">
-    <div class="user-profile">
-      <div class="user-avatar">TG</div>
-      <div class="user-info" *ngIf="!isCollapsed">
-        <div class="user-name">Thomas G.</div>
-        <div class="user-role">Administrator</div>
+  <div class="sidebar-content">
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a
+          *ngFor="let item of menuItems"
+          class="nav-item"
+          [class.active]="isActiveRoute(item.route)"
+          [routerLink]="item.route"
+          [matTooltip]="isCollapsed ? item.label : ''"
+          matTooltipPosition="right"
+        >
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
+          <span class="nav-badge" *ngIf="item.badge && item.badge > 0">
+            {{ item.badge }}
+          </span>
+          <span class="coming-soon-badge" *ngIf="item.badge === 0 && !isCollapsed">
+            Coming Soon
+          </span>
+        </a>
       </div>
+
+      <div class="nav-section nav-section-bottom">
+        <a
+          *ngFor="let item of settingsItems"
+          class="nav-item"
+          [class.active]="isActiveRoute(item.route)"
+          [routerLink]="item.route"
+          [matTooltip]="isCollapsed ? item.label : ''"
+          matTooltipPosition="right"
+        >
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+
+    <div class="sidebar-toggle">
+      <button
+        mat-icon-button
+        class="toggle-button"
+        (click)="toggleSidebar()"
+        [matTooltip]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        matTooltipPosition="right"
+      >
+        <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      </button>
     </div>
   </div>
-
-  <!-- Toggle Button -->
-  <button
-    class="sidebar-toggle"
-    mat-icon-button
-    (click)="toggleSidebar()"
-  >
-    <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
-  </button>
 </aside>

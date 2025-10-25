@@ -1,28 +1,15 @@
 <header class="header" [class.sidebar-collapsed]="sidebarCollapsed">
-  <!-- Left section: Breadcrumbs -->
   <div class="header-left">
-    <nav class="breadcrumbs">
-      <a
-        *ngFor="let crumb of breadcrumbs; let last = last"
-        [routerLink]="crumb.url"
-        class="breadcrumb-item"
-        [class.active]="last"
-      >
-        {{ crumb.label }}
-        <mat-icon *ngIf="!last" class="breadcrumb-separator">chevron_right</mat-icon>
-      </a>
-    </nav>
+    <div class="header-breadcrumb">
+      <span class="company-name">{{ companyName }}</span>
+      <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+      <span class="module-name">{{ currentModule }}</span>
+    </div>
   </div>
 
-  <!-- Right section: Actions -->
   <div class="header-right">
-    <!-- Global Search -->
     <div class="search-container" [class.expanded]="searchVisible">
-      <button
-        mat-icon-button
-        class="search-toggle"
-        (click)="toggleSearch()"
-      >
+      <button mat-icon-button class="search-toggle" (click)="toggleSearch()">
         <mat-icon>search</mat-icon>
       </button>
       <input
@@ -35,75 +22,62 @@
       />
     </div>
 
-    <!-- Notifications -->
     <button
       mat-icon-button
-      [matMenuTriggerFor]="notificationsMenu"
-      [matBadge]="notificationCount"
-      matBadgeColor="warn"
-      [matBadgeHidden]="notificationCount === 0"
+      class="header-action notification-button"
+      [matMenuTriggerFor]="notificationMenu"
     >
       <mat-icon>notifications</mat-icon>
+      <span class="notification-badge" *ngIf="notificationCount > 0">
+        {{ notificationCount }}
+      </span>
     </button>
 
-    <!-- User Menu -->
     <button
-      mat-button
+      mat-icon-button
       [matMenuTriggerFor]="userMenu"
-      class="user-button"
+      class="header-action user-profile-button"
     >
       <div class="user-avatar">TG</div>
-      <mat-icon>expand_more</mat-icon>
     </button>
   </div>
 </header>
 
-<!-- Notifications Menu -->
-<mat-menu #notificationsMenu="matMenu" class="notifications-menu">
-  <div class="menu-header">
+<mat-menu #notificationMenu="matMenu" class="notification-menu">
+  <div class="notification-header">
     <h3>Notifications</h3>
-    <button mat-button class="mark-read-btn">Mark all as read</button>
+    <button mat-button color="primary">Mark all as read</button>
   </div>
-  <div class="notification-item">
-    <mat-icon class="notification-icon warning">warning</mat-icon>
-    <div class="notification-content">
-      <div class="notification-title">Driver document expiring</div>
-      <div class="notification-text">Jan Novák's passport expires in 15 days</div>
-      <div class="notification-time">2 hours ago</div>
+  <mat-divider></mat-divider>
+  <div class="notification-list">
+    <div class="notification-item" *ngFor="let notification of notifications">
+      <mat-icon>{{ notification.icon }}</mat-icon>
+      <div class="notification-content">
+        <p class="notification-title">{{ notification.title }}</p>
+        <p class="notification-time">{{ notification.time }}</p>
+      </div>
+    </div>
+    <div class="notification-empty" *ngIf="notifications.length === 0">
+      <p>No notifications</p>
     </div>
   </div>
-  <div class="notification-item">
-    <mat-icon class="notification-icon info">info</mat-icon>
-    <div class="notification-content">
-      <div class="notification-title">New order created</div>
-      <div class="notification-text">Order #202311001 has been created</div>
-      <div class="notification-time">5 hours ago</div>
-    </div>
-  </div>
-  <button mat-menu-item class="view-all-btn">View all notifications</button>
 </mat-menu>
 
-<!-- User Menu -->
 <mat-menu #userMenu="matMenu" class="user-menu">
-  <div class="menu-user-info">
-    <div class="menu-user-avatar">TG</div>
-    <div>
-      <div class="menu-user-name">Thomas Gradinar</div>
-      <div class="menu-user-email">thomas@g-track.eu</div>
+  <div class="user-info">
+    <div class="user-avatar-large">TG</div>
+    <div class="user-details">
+      <p class="user-name">Thomas G.</p>
+      <p class="user-role">Administrator</p>
     </div>
   </div>
   <mat-divider></mat-divider>
-  <button mat-menu-item routerLink="/settings/profile">
-    <mat-icon>person</mat-icon>
-    Profile
-  </button>
-  <button mat-menu-item routerLink="/settings/preferences">
+  <button mat-menu-item routerLink="/settings">
     <mat-icon>settings</mat-icon>
-    Settings
+    <span>Settings</span>
   </button>
-  <mat-divider></mat-divider>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="logout()">
     <mat-icon>logout</mat-icon>
-    Logout
+    <span>Logout</span>
   </button>
 </mat-menu>
