@@ -1,0 +1,89 @@
+@use 'sass:color';
+@use '@angular/material' as mat;
+@use './colors' as theme;
+
+@include mat.core();
+
+// Define custom palette
+$gtrack-primary-palette: (
+  50: theme.$primary-blue-lighter,
+  100: theme.$primary-blue-light,
+  200: color.adjust(theme.$primary-blue, $lightness: 20%),
+  300: color.adjust(theme.$primary-blue, $lightness: 10%),
+  400: color.adjust(theme.$primary-blue, $lightness: 5%),
+  500: theme.$primary-blue,
+  600: color.adjust(theme.$primary-blue, $lightness: -5%),
+  700: theme.$primary-blue-dark,
+  800: color.adjust(theme.$primary-blue-dark, $lightness: -5%),
+  900: color.adjust(theme.$primary-blue-dark, $lightness: -10%),
+  contrast: (
+    50: theme.$text-primary,
+    100: theme.$text-primary,
+    200: theme.$text-primary,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+$gtrack-accent-palette: (
+  50: color.adjust(theme.$success, $lightness: 40%),
+  100: color.adjust(theme.$success, $lightness: 30%),
+  200: color.adjust(theme.$success, $lightness: 20%),
+  300: color.adjust(theme.$success, $lightness: 10%),
+  400: color.adjust(theme.$success, $lightness: 5%),
+  500: theme.$success,
+  600: color.adjust(theme.$success, $lightness: -5%),
+  700: color.adjust(theme.$success, $lightness: -10%),
+  800: color.adjust(theme.$success, $lightness: -15%),
+  900: color.adjust(theme.$success, $lightness: -20%),
+  contrast: (
+    50: theme.$text-primary,
+    100: theme.$text-primary,
+    200: theme.$text-primary,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+// Create theme
+$gtrack-primary: mat.m2-define-palette($gtrack-primary-palette, 500);
+$gtrack-accent: mat.m2-define-palette($gtrack-accent-palette, 500);
+$gtrack-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$gtrack-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $gtrack-primary,
+    accent: $gtrack-accent,
+    warn: $gtrack-warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: 'Inter, sans-serif',
+  ),
+  density: 0,
+));
+
+// Include theme
+@include mat.all-component-themes($gtrack-theme);
+
+// Custom overrides
+.mat-mdc-raised-button.mat-primary {
+  background-color: theme.$primary-blue !important;
+  
+  &:hover {
+    background-color: theme.$primary-blue-dark !important;
+  }
+}
+
+.mat-mdc-button.mat-primary {
+  color: theme.$primary-blue !important;
+}
