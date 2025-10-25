@@ -23,38 +23,31 @@
 }
 
 .header-left {
+  display: flex;
+  align-items: center;
   flex: 1;
 }
 
-.breadcrumbs {
+.header-breadcrumb {
   display: flex;
   align-items: center;
   gap: $spacing-2;
 
-  .breadcrumb-item {
-    display: flex;
-    align-items: center;
-    gap: $spacing-2;
+  .company-name {
     font-size: $font-sm;
+    font-weight: $font-medium;
     color: $text-secondary;
-    text-decoration: none;
-    transition: color 0.2s ease;
+  }
 
-    &:hover {
-      color: $primary-blue;
-    }
+  .breadcrumb-separator {
+    font-size: 20px;
+    color: $text-tertiary;
+  }
 
-    &.active {
-      color: $text-primary;
-      font-weight: $font-medium;
-    }
-
-    .breadcrumb-separator {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-      color: $text-tertiary;
-    }
+  .module-name {
+    font-size: $font-sm;
+    font-weight: $font-semibold;
+    color: $text-primary;
   }
 }
 
@@ -62,6 +55,10 @@
   display: flex;
   align-items: center;
   gap: $spacing-2;
+}
+
+.header-action {
+  position: relative;
 }
 
 .search-container {
@@ -103,23 +100,38 @@
   }
 }
 
-.user-button {
-  display: flex;
-  align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-1 $spacing-2 !important;
-  border-radius: $radius-md !important;
+.notification-button {
+  position: relative;
 
-  &:hover {
-    background-color: $gray-100 !important;
+  .notification-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: $error;
+    color: $bg-white;
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: $font-semibold;
+    line-height: 1;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translate(25%, -25%);
+    z-index: 1;
   }
+}
 
+.user-profile-button {
   .user-avatar {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: $radius-full;
     background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
-    color: white;
+    color: $bg-white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -129,104 +141,87 @@
 }
 
 ::ng-deep {
-  .notifications-menu,
+  .notification-menu,
   .user-menu {
     .mat-mdc-menu-content {
       padding: 0;
     }
   }
 
-  .notifications-menu {
-    width: 380px;
-    max-height: 480px;
+  .notification-menu {
+    width: 360px;
 
-    .menu-header {
+    .notification-header {
       padding: $spacing-4;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid $border-light;
 
       h3 {
+        margin: 0;
         font-size: $font-lg;
         font-weight: $font-semibold;
-        margin: 0;
-      }
-
-      .mark-read-btn {
-        font-size: $font-xs;
-        color: $primary-blue;
       }
     }
 
-    .notification-item {
-      display: flex;
-      padding: $spacing-4;
-      border-bottom: 1px solid $border-light;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
+    .notification-list {
+      max-height: 400px;
+      overflow-y: auto;
 
-      &:hover {
-        background-color: $gray-50;
-      }
+      .notification-item {
+        padding: $spacing-4;
+        display: flex;
+        gap: $spacing-3;
+        cursor: pointer;
+        transition: background 0.2s ease;
 
-      .notification-icon {
-        margin-right: $spacing-3;
-        
-        &.warning {
-          color: $warning;
+        &:hover {
+          background: $gray-50;
         }
 
-        &.info {
+        mat-icon {
           color: $primary-blue;
         }
-      }
 
-      .notification-content {
-        flex: 1;
+        .notification-content {
+          flex: 1;
 
-        .notification-title {
-          font-size: $font-sm;
-          font-weight: $font-medium;
-          color: $text-primary;
-          margin-bottom: $spacing-1;
-        }
+          .notification-title {
+            margin: 0 0 $spacing-1 0;
+            font-size: $font-sm;
+            font-weight: $font-medium;
+            color: $text-primary;
+          }
 
-        .notification-text {
-          font-size: $font-sm;
-          color: $text-secondary;
-          margin-bottom: $spacing-1;
-        }
-
-        .notification-time {
-          font-size: $font-xs;
-          color: $text-tertiary;
+          .notification-time {
+            margin: 0;
+            font-size: $font-xs;
+            color: $text-secondary;
+          }
         }
       }
-    }
 
-    .view-all-btn {
-      width: 100%;
-      padding: $spacing-3;
-      text-align: center;
-      color: $primary-blue;
-      font-weight: $font-medium;
+      .notification-empty {
+        padding: $spacing-5;
+        text-align: center;
+        color: $text-tertiary;
+      }
     }
   }
 
   .user-menu {
-    .menu-user-info {
-      display: flex;
-      align-items: center;
-      gap: $spacing-3;
+    .user-info {
       padding: $spacing-4;
+      display: flex;
+      gap: $spacing-3;
+      align-items: center;
 
-      .menu-user-avatar {
+      .user-avatar-large {
         width: 48px;
         height: 48px;
         border-radius: $radius-full;
         background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
-        color: white;
+        color: $bg-white;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -234,15 +229,19 @@
         font-size: $font-base;
       }
 
-      .menu-user-name {
-        font-size: $font-sm;
-        font-weight: $font-medium;
-        color: $text-primary;
-      }
+      .user-details {
+        .user-name {
+          margin: 0 0 $spacing-1 0;
+          font-size: $font-sm;
+          font-weight: $font-medium;
+          color: $text-primary;
+        }
 
-      .menu-user-email {
-        font-size: $font-xs;
-        color: $text-secondary;
+        .user-role {
+          margin: 0;
+          font-size: $font-xs;
+          color: $text-secondary;
+        }
       }
     }
   }
