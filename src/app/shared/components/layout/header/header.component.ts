@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatBadgeModule } from '@angular/material/badge';
 import { filter } from 'rxjs/operators';
 
 interface NotificationItem {
@@ -16,7 +17,7 @@ interface NotificationItem {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule, MatMenuModule, MatDividerModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule, MatMenuModule, MatDividerModule, MatBadgeModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -30,7 +31,6 @@ export class HeaderComponent implements OnInit {
     { icon: 'info', title: 'New driver document expiring soon', time: '2 hours ago' },
     { icon: 'warning', title: 'Vehicle maintenance required', time: '5 hours ago' }
   ];
-  searchVisible = false;
 
   constructor(private readonly router: Router) {}
 
@@ -62,16 +62,10 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  toggleSearch(): void {
-    this.searchVisible = !this.searchVisible;
+  markAllRead(): void {
+    this.notifications = [];
+    this.notificationCount = 0;
   }
 
-  onSearch(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    console.log('Search query:', target.value);
-  }
-
-  logout(): void {
-    console.log('Logout clicked');
-  }
+  logout(): void {}
 }
