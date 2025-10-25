@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>G-Track API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🧪 G-Track API Connection Test</h1>
+    
+    <button onclick="testHealth()">Test Health Endpoint</button>
+    <button onclick="testDrivers()">Test Drivers Endpoint</button>
+    <button onclick="testCors()">Test CORS</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        const API_URL = 'https://gtrack-backend-gtrack-backend-lnf9mi.laravel.cloud/api/v0';
+        
+        function log(message, isError = false) {
+            const result = document.getElementById('result');
+            const className = isError ? 'error' : 'success';
+            result.innerHTML += `<p class="${className}">${message}</p>`;
+        }
+        
+        async function testHealth() {
+            document.getElementById('result').innerHTML = '';
+            log('🔍 Testing Health Endpoint...');
+            
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                
+                log(`✅ Health Check Success!`);
+                log(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+            } catch (error) {
+                log(`❌ Health Check Failed: ${error.message}`, true);
+                console.error(error);
+            }
+        }
+        
+        async function testDrivers() {
+            document.getElementById('result').innerHTML = '';
+            log('🔍 Testing Drivers Endpoint...');
+            
+            try {
+                const response = await fetch(`${API_URL}/drivers`);
+                const data = await response.json();
+                
+                log(`✅ Drivers Loaded: ${data.data.length} drivers`);
+                log(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+            } catch (error) {
+                log(`❌ Drivers Failed: ${error.message}`, true);
+                console.error(error);
+            }
+        }
+        
+        async function testCors() {
+            document.getElementById('result').innerHTML = '';
+            log('🔍 Testing CORS Headers...');
+            
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                
+                log(`✅ Request succeeded (CORS working!)`);
+                log(`Status: ${response.status}`);
+                log('Headers:');
+                
+                response.headers.forEach((value, key) => {
+                    if (key.toLowerCase().includes('cors') || key.toLowerCase().includes('access-control')) {
+                        log(`  ${key}: ${value}`);
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ CORS Test Failed: ${error.message}`, true);
+                log('This likely means CORS is NOT configured correctly.');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

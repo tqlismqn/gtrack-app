@@ -1,10 +1,16 @@
 <div class="drivers-container">
   <div class="drivers-header">
     <h1>Drivers</h1>
-    <button mat-raised-button color="primary" disabled>
-      <mat-icon>add</mat-icon>
-      Add Driver (Coming Soon)
-    </button>
+    <div class="header-actions">
+      <button mat-raised-button color="accent" (click)="testApi()">
+        <mat-icon>bug_report</mat-icon>
+        Test API
+      </button>
+      <button mat-raised-button color="primary" disabled>
+        <mat-icon>add</mat-icon>
+        Add Driver (Coming Soon)
+      </button>
+    </div>
   </div>
 
   <div class="drivers-content">

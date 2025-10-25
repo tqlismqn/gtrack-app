@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DriversService } from '../services/drivers.service';
 import { Driver, DocumentType, DOCUMENT_LABELS } from '../models/driver.model';
+import { environment } from '@environments/environment';
 import { DocumentStatusBadgeComponent } from '../components/document-status-badge/document-status-badge.component';
 import { DriverReadinessComponent } from '../components/driver-readiness/driver-readiness.component';
 
@@ -123,4 +124,28 @@ export class DriversListComponent implements OnInit {
   set statusFilterModel(value: string) {
     this.statusFilter.set(value);
   }
+
+
+  testApi() {
+    console.log('🧪 Testing API connection...');
+    console.log('📡 API URL:', environment.apiUrl);
+    console.log('🔗 Full endpoint:', `${environment.apiUrl}/drivers`);
+    
+    // Direct HTTP call to test
+    this.driversService.getDrivers({ per_page: 5 }).subscribe({
+      next: (response) => {
+        console.log('✅ API Test Success!');
+        console.log('📊 Response:', response);
+        alert(`✅ API Working! Loaded ${response.data.length} drivers`);
+      },
+      error: (err) => {
+        console.error('❌ API Test Failed!');
+        console.error('Error:', err);
+        alert(`❌ API Error: ${err.message || 'Unknown error'}
+
+Check browser console for details.`);
+      }
+    });
+  }
+
 }
