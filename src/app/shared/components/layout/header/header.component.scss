@@ -1,0 +1,249 @@
+@import 'src/app/core/theme/colors.scss';
+@import 'src/app/core/theme/spacing.scss';
+@import 'src/app/core/theme/typography.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  right: 0;
+  height: 64px;
+  background-color: $bg-white;
+  border-bottom: 1px solid $border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-6;
+  z-index: 999;
+  transition: left 0.3s ease;
+
+  &.sidebar-collapsed {
+    left: 72px;
+  }
+}
+
+.header-left {
+  flex: 1;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    font-size: $font-sm;
+    color: $text-secondary;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $primary-blue;
+    }
+
+    &.active {
+      color: $text-primary;
+      font-weight: $font-medium;
+    }
+
+    .breadcrumb-separator {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: $text-tertiary;
+    }
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+
+  &.expanded {
+    .search-input {
+      width: 300px;
+      padding: 0 $spacing-3;
+      border: 1px solid $border-medium;
+    }
+  }
+
+  .search-toggle {
+    color: $text-secondary;
+  }
+
+  .search-input {
+    width: 0;
+    height: 36px;
+    border: none;
+    border-radius: $radius-md;
+    background-color: $gray-100;
+    font-size: $font-sm;
+    transition: all 0.3s ease;
+    outline: none;
+
+    &::placeholder {
+      color: $text-tertiary;
+    }
+
+    &:focus {
+      background-color: $bg-white;
+      border-color: $primary-blue;
+    }
+  }
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-1 $spacing-2 !important;
+  border-radius: $radius-md !important;
+
+  &:hover {
+    background-color: $gray-100 !important;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-full;
+    background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: $font-semibold;
+    font-size: $font-xs;
+  }
+}
+
+::ng-deep {
+  .notifications-menu,
+  .user-menu {
+    .mat-mdc-menu-content {
+      padding: 0;
+    }
+  }
+
+  .notifications-menu {
+    width: 380px;
+    max-height: 480px;
+
+    .menu-header {
+      padding: $spacing-4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid $border-light;
+
+      h3 {
+        font-size: $font-lg;
+        font-weight: $font-semibold;
+        margin: 0;
+      }
+
+      .mark-read-btn {
+        font-size: $font-xs;
+        color: $primary-blue;
+      }
+    }
+
+    .notification-item {
+      display: flex;
+      padding: $spacing-4;
+      border-bottom: 1px solid $border-light;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: $gray-50;
+      }
+
+      .notification-icon {
+        margin-right: $spacing-3;
+        
+        &.warning {
+          color: $warning;
+        }
+
+        &.info {
+          color: $primary-blue;
+        }
+      }
+
+      .notification-content {
+        flex: 1;
+
+        .notification-title {
+          font-size: $font-sm;
+          font-weight: $font-medium;
+          color: $text-primary;
+          margin-bottom: $spacing-1;
+        }
+
+        .notification-text {
+          font-size: $font-sm;
+          color: $text-secondary;
+          margin-bottom: $spacing-1;
+        }
+
+        .notification-time {
+          font-size: $font-xs;
+          color: $text-tertiary;
+        }
+      }
+    }
+
+    .view-all-btn {
+      width: 100%;
+      padding: $spacing-3;
+      text-align: center;
+      color: $primary-blue;
+      font-weight: $font-medium;
+    }
+  }
+
+  .user-menu {
+    .menu-user-info {
+      display: flex;
+      align-items: center;
+      gap: $spacing-3;
+      padding: $spacing-4;
+
+      .menu-user-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: $radius-full;
+        background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: $font-semibold;
+        font-size: $font-base;
+      }
+
+      .menu-user-name {
+        font-size: $font-sm;
+        font-weight: $font-medium;
+        color: $text-primary;
+      }
+
+      .menu-user-email {
+        font-size: $font-xs;
+        color: $text-secondary;
+      }
+    }
+  }
+}

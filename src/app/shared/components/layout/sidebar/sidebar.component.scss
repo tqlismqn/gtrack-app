@@ -1,0 +1,219 @@
+@import 'src/app/core/theme/colors.scss';
+@import 'src/app/core/theme/spacing.scss';
+@import 'src/app/core/theme/typography.scss';
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 260px;
+  background-color: $bg-sidebar;
+  border-right: 1px solid $border-light;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 1000;
+
+  &.collapsed {
+    width: 72px;
+
+    .logo {
+      width: 40px;
+    }
+
+    .nav-label,
+    .user-info,
+    .coming-soon-badge {
+      display: none;
+    }
+
+    .nav-item {
+      justify-content: center;
+    }
+  }
+}
+
+.sidebar-header {
+  padding: $spacing-6;
+  border-bottom: 1px solid $border-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+
+  .logo {
+    height: 40px;
+    width: auto;
+    transition: all 0.3s ease;
+  }
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-4 $spacing-3;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-300;
+    border-radius: $radius-full;
+  }
+}
+
+.nav-section {
+  margin-bottom: $spacing-6;
+
+  &.nav-section-bottom {
+    margin-top: auto;
+    margin-bottom: 0;
+    padding-top: $spacing-6;
+    border-top: 1px solid $border-light;
+  }
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: $spacing-3 $spacing-4;
+  margin-bottom: $spacing-1;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: $text-secondary;
+  text-decoration: none;
+  position: relative;
+
+  &:hover {
+    background-color: $primary-blue-lighter;
+    color: $primary-blue;
+
+    .nav-icon {
+      color: $primary-blue;
+    }
+  }
+
+  &.active {
+    background-color: $primary-blue-light;
+    color: $primary-blue;
+    font-weight: $font-medium;
+
+    .nav-icon {
+      color: $primary-blue;
+    }
+  }
+
+  .nav-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    margin-right: $spacing-3;
+    color: $text-secondary;
+    transition: color 0.2s ease;
+  }
+
+  .nav-label {
+    flex: 1;
+    font-size: $font-sm;
+    white-space: nowrap;
+  }
+
+  .nav-badge {
+    background-color: $error;
+    color: white;
+    font-size: $font-xs;
+    padding: 2px 8px;
+    border-radius: $radius-full;
+    font-weight: $font-medium;
+  }
+
+  .coming-soon-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: $radius-sm;
+    background-color: $gray-200;
+    color: $text-tertiary;
+    font-weight: $font-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.sidebar-footer {
+  padding: $spacing-4 $spacing-3;
+  border-top: 1px solid $border-light;
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    padding: $spacing-2;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: $primary-blue-lighter;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: $radius-full;
+      background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: $font-semibold;
+      font-size: $font-sm;
+      margin-right: $spacing-3;
+    }
+
+    .user-info {
+      flex: 1;
+
+      .user-name {
+        font-size: $font-sm;
+        font-weight: $font-medium;
+        color: $text-primary;
+        line-height: 1.2;
+      }
+
+      .user-role {
+        font-size: $font-xs;
+        color: $text-tertiary;
+        line-height: 1.2;
+      }
+    }
+  }
+}
+
+.sidebar-toggle {
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: $bg-white !important;
+  border: 1px solid $border-light;
+  box-shadow: $shadow-md;
+  width: 32px;
+  height: 32px;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: $text-secondary;
+  }
+
+  &:hover {
+    background-color: $primary-blue-lighter !important;
+    
+    mat-icon {
+      color: $primary-blue;
+    }
+  }
+}

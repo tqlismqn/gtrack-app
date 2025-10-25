@@ -1,23 +1,206 @@
-@use '@angular/material' as mat;
+@import './app/core/theme/colors.scss';
+@import './app/core/theme/typography.scss';
+@import './app/core/theme/spacing.scss';
+@import './app/core/theme/material-theme.scss';
 
-@include mat.core();
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-html, body {
-  height: 100%;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  background-color: #fafafa;
+  font-family: $font-family;
+  background-color: $bg-body;
+  color: $text-primary;
+  font-size: $font-base;
+  line-height: $leading-normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Material UI overrides
+.mat-mdc-button {
+  font-family: $font-family !important;
+  text-transform: none !important;
+  border-radius: $radius-md !important;
+}
+
+.mat-mdc-raised-button {
+  box-shadow: $shadow-sm !important;
+  
+  &:hover {
+    box-shadow: $shadow-md !important;
+  }
+}
+
+.mat-mdc-menu-content {
+  font-family: $font-family !important;
 }
 
 .mat-mdc-card {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+  border-radius: $radius-lg !important;
+  box-shadow: $shadow-sm !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $gray-300;
+  border-radius: $radius-full;
+}
+
+.driver-details-card {
+  background-color: $bg-white;
+  border: 1px solid $border-light;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  padding: $spacing-6;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+}
+
+.details-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+
+  .details-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: $radius-full;
+    background: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: $font-semibold;
+    font-size: $font-lg;
+  }
+
+  .details-name {
+    margin: 0;
+    font-size: $font-2xl;
+    font-weight: $font-semibold;
+    color: $text-primary;
+  }
+
+  .details-subtitle {
+    margin: 0;
+    color: $text-secondary;
+    font-size: $font-sm;
+  }
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: $spacing-6;
+}
+
+.detail-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+
+  h3 {
+    margin: 0;
+    font-size: $font-lg;
+    font-weight: $font-semibold;
+    color: $text-primary;
+  }
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .label {
+      font-size: $font-xs;
+      text-transform: uppercase;
+      color: $text-tertiary;
+      letter-spacing: 0.5px;
+    }
+
+    .value {
+      font-size: $font-sm;
+      color: $text-primary;
+      font-weight: $font-medium;
+    }
+  }
+}
+
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+
+  .document-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    padding: $spacing-3;
+    border: 1px solid $border-light;
+    border-radius: $radius-md;
+    background-color: $gray-50;
+
+    .document-status {
+      width: 12px;
+      height: 12px;
+      border-radius: $radius-full;
+
+      &.status-valid {
+        background-color: $success;
+      }
+
+      &.status-warning {
+        background-color: $warning;
+      }
+
+      &.status-expired {
+        background-color: $error;
+      }
+
+      &.status-empty {
+        background-color: $gray-300;
+      }
+    }
+
+    .document-name {
+      font-size: $font-sm;
+      font-weight: $font-medium;
+      color: $text-primary;
+    }
+
+    .document-meta {
+      font-size: $font-xs;
+      color: $text-secondary;
+
+      span + span {
+        margin-left: $spacing-2;
+      }
+    }
+  }
+}
+
+.empty-documents {
+  font-size: $font-sm;
+  color: $text-secondary;
+}
+
+.details-actions {
+  display: flex;
+  gap: $spacing-2;
+  flex-wrap: wrap;
 }

@@ -1,0 +1,30 @@
+@import 'src/app/core/theme/colors.scss';
+@import 'src/app/core/theme/spacing.scss';
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  transition: margin-left 0.3s ease;
+
+  &.sidebar-collapsed {
+    margin-left: 72px;
+  }
+}
+
+.content-area {
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+  padding: $spacing-6;
+  background-color: $bg-body;
+}
+
+@media (max-width: 960px) {
+  .content-area {
+    padding: $spacing-4;
+  }
+}

@@ -1,0 +1,109 @@
+<header class="header" [class.sidebar-collapsed]="sidebarCollapsed">
+  <!-- Left section: Breadcrumbs -->
+  <div class="header-left">
+    <nav class="breadcrumbs">
+      <a
+        *ngFor="let crumb of breadcrumbs; let last = last"
+        [routerLink]="crumb.url"
+        class="breadcrumb-item"
+        [class.active]="last"
+      >
+        {{ crumb.label }}
+        <mat-icon *ngIf="!last" class="breadcrumb-separator">chevron_right</mat-icon>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Right section: Actions -->
+  <div class="header-right">
+    <!-- Global Search -->
+    <div class="search-container" [class.expanded]="searchVisible">
+      <button
+        mat-icon-button
+        class="search-toggle"
+        (click)="toggleSearch()"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+      <input
+        *ngIf="searchVisible"
+        type="text"
+        class="search-input"
+        placeholder="Search..."
+        (input)="onSearch($event)"
+        autofocus
+      />
+    </div>
+
+    <!-- Notifications -->
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="notificationsMenu"
+      [matBadge]="notificationCount"
+      matBadgeColor="warn"
+      [matBadgeHidden]="notificationCount === 0"
+    >
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <!-- User Menu -->
+    <button
+      mat-button
+      [matMenuTriggerFor]="userMenu"
+      class="user-button"
+    >
+      <div class="user-avatar">TG</div>
+      <mat-icon>expand_more</mat-icon>
+    </button>
+  </div>
+</header>
+
+<!-- Notifications Menu -->
+<mat-menu #notificationsMenu="matMenu" class="notifications-menu">
+  <div class="menu-header">
+    <h3>Notifications</h3>
+    <button mat-button class="mark-read-btn">Mark all as read</button>
+  </div>
+  <div class="notification-item">
+    <mat-icon class="notification-icon warning">warning</mat-icon>
+    <div class="notification-content">
+      <div class="notification-title">Driver document expiring</div>
+      <div class="notification-text">Jan Novák's passport expires in 15 days</div>
+      <div class="notification-time">2 hours ago</div>
+    </div>
+  </div>
+  <div class="notification-item">
+    <mat-icon class="notification-icon info">info</mat-icon>
+    <div class="notification-content">
+      <div class="notification-title">New order created</div>
+      <div class="notification-text">Order #202311001 has been created</div>
+      <div class="notification-time">5 hours ago</div>
+    </div>
+  </div>
+  <button mat-menu-item class="view-all-btn">View all notifications</button>
+</mat-menu>
+
+<!-- User Menu -->
+<mat-menu #userMenu="matMenu" class="user-menu">
+  <div class="menu-user-info">
+    <div class="menu-user-avatar">TG</div>
+    <div>
+      <div class="menu-user-name">Thomas Gradinar</div>
+      <div class="menu-user-email">thomas@g-track.eu</div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <button mat-menu-item routerLink="/settings/profile">
+    <mat-icon>person</mat-icon>
+    Profile
+  </button>
+  <button mat-menu-item routerLink="/settings/preferences">
+    <mat-icon>settings</mat-icon>
+    Settings
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-menu>
