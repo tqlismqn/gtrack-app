@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "public": false,
   "buildCommand": "npm run build",
   "outputDirectory": "dist/gtrack-app/browser",
-  "devCommand": "ng serve --port $PORT",
+  "installCommand": "npm install",
   "framework": null,
   "rewrites": [
     {
@@ -12,6 +11,15 @@
     }
   ],
   "headers": [
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -26,10 +34,6 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
         }
       ]
     },
@@ -43,7 +47,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.js",
+      "source": "/:path*.js",
       "headers": [
         {
           "key": "Cache-Control",
@@ -52,7 +56,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.css",
+      "source": "/:path*.css",
       "headers": [
         {
           "key": "Cache-Control",
